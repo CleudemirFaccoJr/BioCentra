@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+apt-get update
+apt-get install -y wkhtmltopdf
+
 # exit on error
 set -o errexit
 
