@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<meta charset="UTF-8">
+<style>
+  
+  @page { margin: 1cm; }
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; margin: 0; padding: 20px; }
+
+  /* LINHA DIVISÓRIA ESPECÍFICA */
+  .divisor {     border-bottom: 1px solid #ccc;     margin: 15px 0;     width: 100%;   }
+ 
+  /* Cabeçalho Superior */
+  .header-container { display: inline-flex; justify-content: space-between; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 30px; width: 100%;}
+  .logo { width: 250px; }
+  .header-info { text-align: right; margin-top: -80px;}
+  .header-info h1 { margin: 0; color: #666; font-size: 28px; text-transform: uppercase; }
+  .header-info p { margin: 2px 0; color: #888; font-size: 14px; }
+
+  /* Dados da BioCentra */
+  .dados-biocentra { border-bottom: 2px solid #eee!important; }
+
+  /* Dados do Cliente */
+  .cliente-box { margin-bottom: 30px; font-size: 14px; line-height: 1.6; }
+  .cliente-box h2 { font-size: 18px; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+
+  /* Bloco de Produto (Layout da Imagem) */
+  .product-section { margin-top: 40px; page-break-inside: avoid; }
+  .product-main { display: flex; gap: 30px; margin-bottom: 20px; }
+  .product-img-container { width: 45%; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; height: 350px; }
+  .product-img-container img { max-width: 95%; max-height: 95%; align-items: center;}
+  .product-text { width: 50%; }
+  .product-text h2 { font-size: 24px; margin-top: 0; color: #444; }
+  .product-text p { color: #666; font-size: 14px; }
+
+  /* Tabela de Especificações */
+  .specs-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+  .specs-table thead th { background-color: #777; color: white; padding: 10px; text-align: center; font-weight: normal; }
+  .specs-table th, .specs-table td { border: 1px solid #eee; padding: 10px; font-size: 13px; }
+  .specs-table tbody tr:nth-child(even) { background-color: #fafafa; }
+  .label-col { width: 40%; font-weight: bold; color: #555; }
+
+  /* Tabela de Resumo (Largura Total) */
+  .full-width-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+  .full-width-table th { background-color: #f8f9fa; color: #333; border: 1px solid #dee2e6; padding: 12px; text-align: left; }
+  .full-width-table td { border: 1px solid #dee2e6; padding: 10px; }
+
+  /* Seção de Condições e Assinaturas (Imagem 3) */
+  .conditions { margin-top: 30px; font-size: 12px; }
+  .signature-container { margin-top: 60px; width: 100%; display: table; }
+  .signature-box { display: table-cell; width: 50%; text-align: center; }
+  .signature-line { border-top: 1px solid #000; width: 80%; margin: 0 auto; padding-top: 5px; }
+
+  
+
+  .page-break { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<div class="header-container">
+    <div>
+        <img src="{{ logo_path }}" class="logo">
+    </div>
+    <div class="header-info">
+        <h1>Orçamento</h1>
+        <p>Modelos e Descritivo de Produtos</p>
+        <p>Data: {{ data }}</p>
+    </div>
+</div>
+
+<!-- Dados da BioCentra -->
+ <div class="container dados-biocentra">
+ <div class="row">
+   <div class="col-9">
+    <strong>Bio-Centra - Comércio e Importação de Suprimentos para Laboratórios Ltda.</strong>
+   </div>
+   <div class="col-md-3">
+         CNPJ: 46.735.804/0001-30<br>
+      </div>
+ </div>
+ <div class="row">
+      <div class="col-md-12">
+        biocentra@bio-centra.com | (11) 98942 - 2666 <br>
+      </div>
+ </div>
+ <div class="row">
+<div class="col-md-12">
+    Rua Tico Tico, 291 - Vila Ayrosa - Osasco - SP <br>
+ </div>
+ </div>
+
+ <div class="divisor"></div>
+
+<!-- Dados do Cliente -->
+<div style="font-size: 14px; margin-bottom: 20px; width: 100%;">
+    
+    <div style="width: 100%; margin-bottom: 5px;">
+        <div style="display: inline-block; width: 48%; vertical-align: top;">
+            <strong>Cliente:</strong> {{ cliente.nome }}
+        </div>
+        <div style="display: inline-block; width: 48%; vertical-align: top; text-align: right;">
+            <strong>Email:</strong> {{ cliente.email }}
+        </div>
+    </div>
+
+    <div style="width: 100%; margin-bottom: 5px;">
+        <div style="display: inline-block; width: 48%; vertical-align: top;">
+            <strong>Contato:</strong> {{ cliente.contato }}
+        </div>
+        <div style="display: inline-block; width: 48%; vertical-align: top;text-align: right;">
+            <strong>Telefone:</strong> {{ cliente.telefone }}
+        </div>
+    </div>
+
+    <div style="width: 100%;">
+        <div style="display: inline-block; width: 48%; vertical-align: top;">
+            <strong>Endereço:</strong> {{ cliente.endereco }}
+        </div>
+        <div style="display: inline-block; width: 48%; vertical-align: top;text-align: right;">
+            <strong>CNPJ:</strong> {{ cliente.cnpj if cliente.cnpj else '---' }}
+        </div>
+    </div>
+
+</div>
+
+<div style="border-bottom: 1px solid #ccc; margin: 15px 0;"></div>
+
+<!-- Tabela com o resumo e valores do produto -->
+<table class="full-width-table">
+  <thead>
+    <tr style="background: #eee;">
+      <th>Item</th>
+      <th>Descrição</th>
+      <th>Quantidade</th>
+      <th>Valor Unitário</th>
+      <th>Valor Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in produtos %}
+    <tr>
+      <td>{{ loop.index }}</td>
+      <td>{{ p.nome }}</td>
+      <td>{{ p.quantidade }}</td>
+      <td>R$ {{ '%.2f'|format(p.valor_unitario) }}</td>
+      <td>R$ {{ '%.2f'|format(p.subtotal) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="4" style="text-align:right; border: 1px solid #dee2e6; padding: 5px 10px;"><strong>Total Parcial:</strong></td>
+      <td style="border: 1px solid #dee2e6; padding: 5px 10px;">R$ {{ '%.2f'|format(total) }}</td>
+    </tr>
+
+    {% if cliente.valor_frete and cliente.valor_frete|float > 0 %}
+    <tr>
+      <td colspan="4" style="text-align:right; border: 1px solid #dee2e6; padding: 5px 10px;"><strong>Frete ({{ cliente.tipo_frete }}):</strong></td>
+      <td style="border: 1px solid #dee2e6; padding: 5px 10px;">R$ {{ '%.2f'|format(cliente.valor_frete|float) }}</td>
+    </tr>
+    {% endif %}
+
+    <tr>
+      <td colspan="5" style="border: 1px solid #dee2e6; height: 10px;"></td>
+    </tr>
+
+    <tr style="font-size: 18px;">
+      <td colspan="4" style="text-align:right; border: 1px solid #dee2e6; padding:10px;"><strong>Valor Total:</strong></td>
+      <td style="font-weight:bold; background: #f8f9fa; border: 2px solid #dee2e6; padding:10px;">
+        {# Soma o total dos produtos com o valor do frete #}
+        R$ {{ '%.2f'|format(total + (cliente.valor_frete|float if cliente.valor_frete else 0)) }}
+      </td>
+    </tr>
+  </tfoot>
+</table>
+
+<!-- Condições -->
+<div class="conditions">
+  <h3>Condições</h3>
+  <ul>
+    <li>Condições de pagamento: pagamento antecipado (100%).</li>
+    <li>O fornecimento e o prazo de entrega iniciarão após a confirmação do pagamento.</li>
+    <li>Validade da proposta: 30 dias a partir da data de emissão.</li>
+    <li>Garantia: 12 meses contra defeitos de fabricação.</li>
+    <li>Os equipamentos comercializados pela Bio-Centra são de uso exclusivo para pesquisa.</li>
+  </ul>
+</div>
+
+<!-- Assinaturas -->
+<div class="signature-container">
+  <div class="signature-box">
+    <div class="signature-line"></div>
+    <strong>{{ cliente.nome }}</strong><br>Comprador
+  </div>
+  <div class="signature-box">
+    <div class="signature-line"></div>
+    <strong>Ingrid Roberto</strong><br>Vendas
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- Tabela dos produtos e descrição -->
+{% for p in produtos %}
+<div class="product-section">
+    <div class="product-main">
+        <div class="product-img-container">
+            <img src="file:///{{ p.imagem }}">
+        </div>
+        <div class="product-text">
+            <h2>{{ p.nome }}</h2>
+            <p>Abaixo seguem as especificações detalhadas do modelo selecionado para este orçamento.</p>
+            <p><strong>Modelos Disponíveis:</strong><br>Padronizado / Customizado</p>
+        </div>
+    </div>
+
+    <table class="specs-table">
+        <thead>
+            <tr>
+                <th colspan="2">{{ p.nome }}</th>
+            </tr>
+            <tr style="background: #fdfdfd; color: #333;">
+                <th>Especificações</th>
+                <th>Detalhes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set specs = p.especificacoes.split(';') %}
+            {% for i in range(0, specs|length - 1, 2) %}
+            <tr>
+                <td class="label-col">{{ specs[i] }}</td>
+                <td>{{ specs[i+1] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endfor %}
+
+</body>
+</html>

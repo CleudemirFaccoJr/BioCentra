@@ -1,0 +1,228 @@
+ body {
+            background: #e9ecef;
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .main-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .card-header-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border: none;
+        }
+
+        .card-header-custom h4 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 1.75rem;
+        }
+
+        .card-header-custom p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .produto-card {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .produto-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .produto-number {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-remove {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: none;
+            background: #dc3545;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            opacity: 0;
+            padding: 0;
+        }
+
+        .produto-card:hover .btn-remove {
+            opacity: 1;
+        }
+
+        .btn-remove:hover {
+            background: #c82333;
+            transform: scale(1.1);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 0.625rem 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 165px;
+            border: 2px dashed #dee2e6;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .image-preview:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+
+        .image-placeholder {
+            color: #adb5bd;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        .btn-primary-custom {
+            background: #3b82f6;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            color: white;
+        }
+
+        .btn-primary-custom:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-success-custom {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+            border: none;
+            padding: 0.875rem 2.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(86, 171, 47, 0.3);
+            font-size: 1.05rem;
+        }
+
+        .btn-success-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(86, 171, 47, 0.4);
+        }
+
+        .btn-secondary-custom {
+            background: #6c757d;
+            border: none;
+            padding: 0.875rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary-custom:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            color: #ffffff;
+        }
+
+        .action-buttons {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #6c757d;
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .produto-card {
+                padding: 1rem;
+            }
+            
+            .image-preview {
+                height: 100px;
+            }
+        }
+
+        .input-group-text {
+            background: #e9ecef;
+            border: 2px solid #e9ecef;
+            border-radius: 10px 0 0 10px;
+            font-weight: 600;
+        }

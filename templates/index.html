@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerar Orçamento</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container py-5">
+    <div class="card shadow">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Dados do Cliente e Logística</h4>
+      </div>
+      <div class="card-body">
+        <form method="POST" action="/proximo">
+          
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Nome do Cliente</label>
+              <input type="text" name="nome" class="form-control" value="{{ cliente.nome or '' }}" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold">CNPJ</label>
+              <input type="text" name="cnpj" class="form-control" value="{{ cliente.cnpj or '' }}">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-bold">Contato</label>
+              <input type="text" name="contato" class="form-control" value="{{ cliente.contato or '' }}">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-bold">Email</label>
+              <input type="email" name="email" class="form-control" value="{{ cliente.email or '' }}">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-bold">Telefone</label>
+              <input type="text" name="telefone" class="form-control" value="{{ cliente.telefone or '' }}">
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-bold">Endereço</label>
+              <textarea name="endereco" class="form-control" rows="2">{{ cliente.endereco or '' }}</textarea>
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="row g-3 align-items-end">
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Tipo de Frete</label>
+              <select name="tipo_frete" id="tipo_frete" class="form-select" onchange="toggleFrete()">
+                <option value="Proprio" {% if cliente.tipo_frete == 'Proprio' %}selected{% endif %}>Próprio</option>
+                <option value="Transportadora" {% if cliente.tipo_frete == 'Transportadora' %}selected{% endif %}>Transportadora</option>
+                <option value="Correio" {% if cliente.tipo_frete == 'Correio' %}selected{% endif %}>Correios</option>
+              </select>
+            </div>
+            
+            <div class="col-md-6" id="campo_valor_frete" style="display: none;">
+              <label class="form-label fw-bold">Valor do Frete (R$)</label>
+              <input type="number" step="0.01" name="valor_frete" id="valor_input" class="form-control" value="{{ cliente.valor_frete or '' }}" placeholder="0,00">
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <button type="submit" class="btn btn-primary btn-lg w-100">Adicionar Produtos</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleFrete() {
+      const tipo = document.getElementById('tipo_frete').value;
+      const campoValor = document.getElementById('campo_valor_frete');
+      const inputValor = document.getElementById('valor_input');
+
+      if (tipo === 'Transportadora' || tipo === 'Correio') {
+        campoValor.style.display = 'block';
+      } else {
+        campoValor.style.display = 'none';
+        inputValor.value = ''; // Limpa o valor se for Próprio
+      }
+    }
+
+    // Executa ao carregar a página para o caso de o usuário clicar em "Voltar"
+    window.onload = toggleFrete;
+  </script>
+</body>
+</html>
