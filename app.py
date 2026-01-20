@@ -9,8 +9,8 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 app.secret_key = 'chave_secreta_para_sessoes' # Essencial para o "session" funcionar
 
-WKHTML_PATH = r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
-config = pdfkit.configuration(wkhtmltopdf=WKHTML_PATH)
+config = pdfkit.configuration()
+pdfkit.from_html("arquivo.html", "saida.pdf", configuration=config)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(BASE_DIR, 'output')
