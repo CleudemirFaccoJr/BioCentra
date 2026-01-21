@@ -3,6 +3,7 @@ import platform
 import os
 import firebase_admin
 from firebase_admin import credentials, db
+import locale
 from flask import Flask, json, jsonify, render_template, request,after_this_request, send_file, session, redirect, url_for
 from weasyprint import HTML, CSS
 from datetime import datetime
@@ -36,6 +37,12 @@ if not firebase_admin._apps:
     firebase_admin.initialize_app(cred, {
         'databaseURL': 'https://orcamentos-bio-centra-default-rtdb.firebaseio.com/'
     })
+
+    # Define a localização para português do Brasil para formatar moeda
+    try:
+        locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+    except:
+        locale.setlocale(locale.LC_ALL, '')
 
 @app.route('/')
 def index():
@@ -174,7 +181,14 @@ def gerar_orcamento():
             except Exception as e:
                 app.logger.error(f"Erro ao deletar {caminho}: {e}")
         return response
-
+    
+    @app.template_filter('formato_moeda')
+    def formato_moeda(valor):
+        if valor is None:
+            return "0,00"
+        # Formata com separador de milhar (.) e decimal (,)
+        return "{:,.2f}".format(float(valor)).replace(",", "X").replace(".", ",").replace("X", ".")
+    
     return send_file(caminho_pdf, as_attachment=True)
 
 if __name__ == '__main__':

@@ -133,21 +133,21 @@
       <td>{{ loop.index }}</td>
       <td>{{ p.nome }}</td>
       <td>{{ p.quantidade }}</td>
-      <td>R$ {{ '%.2f'|format(p.valor_unitario) }}</td>
-      <td>R$ {{ '%.2f'|format(p.subtotal) }}</td>
+      <td>R$ {{ p.valor_unitario | formato_moeda }}</td>
+      <td>R$ {{ p.subtotal | formato_moeda }}</td>
     </tr>
     {% endfor %}
   </tbody>
   <tfoot>
     <tr>
       <td colspan="4" style="text-align:right; border: 1px solid #dee2e6; padding: 5px 10px;"><strong>Total Parcial:</strong></td>
-      <td style="border: 1px solid #dee2e6; padding: 5px 10px;">R$ {{ '%.2f'|format(total) }}</td>
+      <td style="border: 1px solid #dee2e6; padding: 5px 10px;">R$ {{ total | formato_moeda }}</td>
     </tr>
 
     {% if cliente.valor_frete and cliente.valor_frete|float > 0 %}
     <tr>
       <td colspan="4" style="text-align:right; border: 1px solid #dee2e6; padding: 5px 10px;"><strong>Frete ({{ cliente.tipo_frete }}):</strong></td>
-      <td style="border: 1px solid #dee2e6; padding: 5px 10px;">R$ {{ '%.2f'|format(cliente.valor_frete|float) }}</td>
+      <td style="border: 1px solid #dee2e6; padding: 5px 10px;">R$ {{ cliente.valor_frete | formato_moeda }}</td>
     </tr>
     {% endif %}
 
@@ -159,7 +159,7 @@
       <td colspan="4" style="text-align:right; border: 1px solid #dee2e6; padding:10px;"><strong>Valor Total:</strong></td>
       <td style="font-weight:bold; background: #f8f9fa; border: 2px solid #dee2e6; padding:10px;">
         {# Soma o total dos produtos com o valor do frete #}
-        R$ {{ '%.2f'|format(total + (cliente.valor_frete|float if cliente.valor_frete else 0)) }}
+        R$ {{ (total + (cliente.valor_frete|float if cliente.valor_frete else 0)) | formato_moeda }}
       </td>
     </tr>
   </tfoot>
