@@ -14,6 +14,18 @@ app.secret_key = 'chave_secreta_para_sessoes' # Essencial para o "session" funci
 
 app.config['SESSION_PERMANENT'] = False
 
+@app.template_filter('formato_moeda')
+def formato_moeda(valor):
+    try:
+        if valor is None or valor == '':
+            return "0,00"
+        # Garante que o valor seja um float para formatação
+        valor_float = float(valor)
+        # Formata com separadores de milhar e decimal brasileiros
+        return "{:,.2f}".format(valor_float).replace(",", "X").replace(".", ",").replace("X", ".")
+    except (ValueError, TypeError):
+        return valor
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(BASE_DIR, 'output')
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'static', 'uploads')
@@ -181,14 +193,7 @@ def gerar_orcamento():
             except Exception as e:
                 app.logger.error(f"Erro ao deletar {caminho}: {e}")
         return response
-    
-    @app.template_filter('formato_moeda')
-    def formato_moeda(valor):
-        if valor is None:
-            return "0,00"
-        # Formata com separador de milhar (.) e decimal (,)
-        return "{:,.2f}".format(float(valor)).replace(",", "X").replace(".", ",").replace("X", ".")
-    
+        
     return send_file(caminho_pdf, as_attachment=True)
 
 if __name__ == '__main__':
