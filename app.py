@@ -11,6 +11,8 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 app.secret_key = 'chave_secreta_para_sessoes' # Essencial para o "session" funcionar
 
+app.config['SESSION_PERMANENT'] = False
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(BASE_DIR, 'output')
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'static', 'uploads')
