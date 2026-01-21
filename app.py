@@ -16,10 +16,7 @@ if platform.system() == "Windows":
     )
 else:
     # Linux (Render)
-    config = pdfkit.configuration()
-
-# uso normal
-pdfkit.from_string(html, output_path, configuration=config)
+    config = pdfkit.configuration(wkhtmltopdf='/usr/local/bin/wkhtmltopdf')
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(BASE_DIR, 'output')
