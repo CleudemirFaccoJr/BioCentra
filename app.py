@@ -3,7 +3,7 @@ import platform
 import os
 import firebase_admin
 from firebase_admin import credentials, db
-from flask import Flask, json, render_template, request,after_this_request, send_file, session, redirect, url_for
+from flask import Flask, json, jsonify, render_template, request,after_this_request, send_file, session, redirect, url_for
 from weasyprint import HTML, CSS
 from datetime import datetime
 from werkzeug.utils import secure_filename
@@ -42,6 +42,23 @@ def index():
 
 @app.route('/proximo', methods=['POST'])
 def proximo():
+    # Coleta os dados do formulário
+    dados_cliente = {
+        'nome': request.form.get('nome'),
+        'cnpj': request.form.get('cnpj').replace('.', '').replace('/', '').replace('-', ''), # Limpa a máscara
+        'contato': request.form.get('contato'),
+        'email': request.form.get('email'),
+        'telefone': request.form.get('telefone'),
+        'endereco': request.form.get('endereco'),
+        'tipo_frete': request.form.get('tipo_frete'),
+        'valor_frete': request.form.get('valor_frete') or '0'
+    }
+
+    # 1. Salva/Atualiza no Firebase usando o CNPJ como ID único
+    if dados_cliente['cnpj']:
+        ref = db.reference(f"clientes/{dados_cliente['cnpj']}")
+        ref.set(dados_cliente) # O 'set' sobrescreve se já existir, evitando duplicatas
+
     # Salva os dados do cliente na sessão
     session['cliente'] = {
         'nome': request.form.get('nome'),
@@ -55,6 +72,13 @@ def proximo():
     }
     return render_template('cadastro_produtos.html')
 
+@app.route('/buscar-cliente/<cnpj>')
+def buscar_cliente(cnpj):
+    cnpj_limpo = cnpj.replace('.', '').replace('/', '').replace('-', '')
+    ref = db.reference(f"clientes/{cnpj_limpo}")
+    cliente = ref.get()
+    return jsonify(cliente) if cliente else jsonify(None)
+
 @app.route('/gerar-orcamento', methods=['POST'])
 def gerar_orcamento():
     cliente = session.get('cliente')
@@ -67,6 +91,7 @@ def gerar_orcamento():
     valores = request.form.getlist('prod_valor[]')
     specs = request.form.getlist('prod_specs[]')
     fotos = request.files.getlist('prod_foto[]') # Arquivos de imagem
+    garantias = request.form.getlist('prod_garantia[]')
 
     lista_produtos = []
     total_geral = 0
@@ -85,7 +110,7 @@ def gerar_orcamento():
             caminho_foto_final = caminho_foto_final.replace('\\', '/')
             arquivos_para_deletar.append(caminho_foto_final) 
 
-        v_unit = float(valores[i] or 0)
+        v_unit = float(valores[i].replace('.', '').replace(',', '.') or 0)
         qtd = int(quants[i] or 0)
         subtotal = v_unit * qtd
         total_geral += subtotal
@@ -96,7 +121,8 @@ def gerar_orcamento():
             'especificacoes': specs[i],
             'quantidade': qtd,
             'valor_unitario': v_unit,
-            'subtotal': subtotal
+            'subtotal': subtotal,
+            'garantia': garantias[i]
         })
 
     # LÓGICA DO NÚMERO INCREMENTAL COM FIREBASE

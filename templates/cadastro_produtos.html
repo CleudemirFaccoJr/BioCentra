@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/cadastroproduto.css') }}">
 </head>
+
 <body>
     <div class="container py-4">
         <div class="main-card">
@@ -85,7 +86,7 @@
                                     <label class="form-label">Valor Unitário</label>
                                     <div class="input-group">
                                         <span class="input-group-text">R$</span>
-                                        <input type="number" step="0.01" class="form-control" name="prod_valor[]" placeholder="0,00" min="0">
+                                        <input type="number" step="0.01" class="form-control" name="prod_valor[]" oninput="formatarMoeda(this)" placeholder="0,00" min="0">
                                     </div>
                                 </div>
 
@@ -93,6 +94,15 @@
                                     <label class="form-label">Especificações (Chave;Valor;)</label>
                                     <input type="text" class="form-control" name="prod_specs[]" placeholder="Ex: Cor;Azul;Tamanho;Grande;Peso;1kg">
                                     <small class="text-muted">Separe as especificações com ponto e vírgula. Ex: Chave;Valor;Chave2;Valor2</small>
+                                </div>
+
+                                <div class="col-md-4 mt-2">
+                                    <label class="form-label">Garantia</label>
+                                    <select class="form-select" name="prod_garantia[]">
+                                        <option value="6 meses">6 meses</option>
+                                        <option value="1 ano" selected>1 ano</option>
+                                        <option value="2 anos">2 anos</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -147,6 +157,16 @@
         for (let i = 0; i < 3; i++) {
             addProduto();
         }
+
+        // Função para formatar moeda brasileira
+            function formatarMoeda(input) {
+                let valor = input.value.replace(/\D/g, '');
+                valor = (valor / 100).toFixed(2) + '';
+                valor = valor.replace(".", ",");
+                valor = valor.replace(/(\d)(\d{3})(\d{3}),/g, "$1.$2.$3,");
+                valor = valor.replace(/(\d)(\d{3}),/g, "$1.$2,");
+                input.value = valor;
+            }
     </script>
 </body>
 </html>

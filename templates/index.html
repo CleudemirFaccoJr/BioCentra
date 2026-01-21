@@ -50,6 +50,7 @@
                 <option value="Proprio" {% if cliente.tipo_frete == 'Proprio' %}selected{% endif %}>Próprio</option>
                 <option value="Transportadora" {% if cliente.tipo_frete == 'Transportadora' %}selected{% endif %}>Transportadora</option>
                 <option value="Correio" {% if cliente.tipo_frete == 'Correio' %}selected{% endif %}>Correios</option>
+                <option value="Combinar" {% if cliente.tipo_frete == 'Combinar' %}selected{% endif %}>À Combinar</option>
               </select>
             </div>
             
@@ -83,6 +84,25 @@
 
     // Executa ao carregar a página para o caso de o usuário clicar em "Voltar"
     window.onload = toggleFrete;
+
+    document.querySelector('input[name="cnpj"]').addEventListener('blur', function() {
+    const cnpj = this.value;
+    if (cnpj.length >= 14) { // Verifica se digitou o CNPJ
+        fetch(`/buscar-cliente/${cnpj}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    // Preenche os campos automaticamente
+                    document.querySelector('input[name="nome"]').value = data.nome;
+                    document.querySelector('input[name="email"]').value = data.email;
+                    document.querySelector('input[name="contato"]').value = data.contato;
+                    document.querySelector('input[name="telefone"]').value = data.telefone;
+                    document.querySelector('textarea[name="endereco"]').value = data.endereco;
+                    alert("Cliente já cadastrado! Dados carregados.");
+                }
+            });
+    }
+});
   </script>
 </body>
 </html>

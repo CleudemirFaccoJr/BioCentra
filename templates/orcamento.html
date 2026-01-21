@@ -95,34 +95,23 @@
 
 <!-- Dados do Cliente -->
 <div style="font-size: 14px; margin-bottom: 20px; width: 100%;">
+    <div style="margin-bottom: 5px;">
+        <strong>Cliente:</strong> {{ cliente.nome }}
+    </div>
     
-    <div style="width: 100%; margin-bottom: 5px;">
-        <div style="display: inline-block; width: 48%; vertical-align: top;">
-            <strong>Cliente:</strong> {{ cliente.nome }}
-        </div>
-        <div style="display: inline-block; width: 48%; vertical-align: top; text-align: right;">
-            <strong>Email:</strong> {{ cliente.email }}
-        </div>
+    <div style="margin-bottom: 5px;">
+        <strong>Email:</strong> {{ cliente.email }}
     </div>
 
-    <div style="width: 100%; margin-bottom: 5px;">
-        <div style="display: inline-block; width: 48%; vertical-align: top;">
-            <strong>Contato:</strong> {{ cliente.contato }}
-        </div>
-        <div style="display: inline-block; width: 48%; vertical-align: top;text-align: right;">
-            <strong>Telefone:</strong> {{ cliente.telefone }}
-        </div>
+    <div style="margin-bottom: 5px; display: table; width: 100%;">
+        <div style="display: table-cell; width: 33%;"><strong>CNPJ:</strong> {{ cliente.cnpj }}</div>
+        <div style="display: table-cell; width: 33%; text-align: center;"><strong>Contato:</strong> {{ cliente.contato }}</div>
+        <div style="display: table-cell; width: 33%; text-align: right;"><strong>Telefone:</strong> {{ cliente.telefone }}</div>
     </div>
 
-    <div style="width: 100%;">
-        <div style="display: inline-block; width: 48%; vertical-align: top;">
-            <strong>Endereço:</strong> {{ cliente.endereco }}
-        </div>
-        <div style="display: inline-block; width: 48%; vertical-align: top;text-align: right;">
-            <strong>CNPJ:</strong> {{ cliente.cnpj if cliente.cnpj else '---' }}
-        </div>
+    <div>
+        <strong>Endereço:</strong> {{ cliente.endereco }}
     </div>
-
 </div>
 
 <div style="border-bottom: 1px solid #ccc; margin: 15px 0;"></div>
@@ -183,7 +172,15 @@
     <li>Condições de pagamento: pagamento antecipado (100%).</li>
     <li>O fornecimento e o prazo de entrega iniciarão após a confirmação do pagamento.</li>
     <li>Validade da proposta: 30 dias a partir da data de emissão.</li>
-    <li>Garantia: 12 meses contra defeitos de fabricação.</li>
+    <li>Garantia: 
+    {% set garantias_unicas = [] %}
+    {% for p in produtos %}
+        {% if p.garantia not in garantias_unicas %}
+            {% set _ = garantias_unicas.append(p.garantia) %}
+        {% endif %}
+    {% endfor %}
+    {{ garantias_unicas | join(', ') }} contra defeitos de fabricação.
+  </li>
     <li>Os equipamentos comercializados pela Bio-Centra são de uso exclusivo para pesquisa.</li>
   </ul>
 </div>
