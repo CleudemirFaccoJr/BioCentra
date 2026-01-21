@@ -19,7 +19,7 @@ else:
     config = pdfkit.configuration()
 
 # uso normal
-pdfkit.from_html(html, output_path, configuration=config)
+pdfkit.from_string(html, output_path, configuration=config)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(BASE_DIR, 'output')
