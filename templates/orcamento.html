@@ -14,7 +14,7 @@
   /* Cabeçalho Superior */
   .header-container { display: inline-flex; justify-content: space-between; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 30px; width: 100%;}
   .logo { width: 250px; }
-  .header-info { text-align: right; margin-top: -80px;}
+  .header-info { text-align: right;}
   .header-info h1 { margin: 0; color: #666; font-size: 28px; text-transform: uppercase; }
   .header-info p { margin: 2px 0; color: #888; font-size: 14px; }
 
@@ -66,7 +66,7 @@
     <div class="header-info">
         <h1>Orçamento</h1>
         <p>Modelos e Descritivo de Produtos</p>
-        <p>Data: {{ data }}</p>
+        <p><strong>Nº {{ num_orcamento }}</strong> | Data: {{ data }}</p>
     </div>
 </div>
 

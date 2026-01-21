@@ -1,12 +1,12 @@
 # app.py
 import platform
 import os
-import pandas as pd
-from flask import Flask, render_template, request, send_file, session, redirect, url_for
+import firebase_admin
+from firebase_admin import credentials, db
+from flask import Flask, json, render_template, request,after_this_request, send_file, session, redirect, url_for
 from weasyprint import HTML, CSS
 from datetime import datetime
 from werkzeug.utils import secure_filename
-
 
 app = Flask(__name__)
 app.secret_key = 'chave_secreta_para_sessoes' # Essencial para o "session" funcionar
@@ -19,6 +19,14 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 logo_path = os.path.join(BASE_DIR, 'static', 'logo.png').replace('\\', '/')
+
+# Inicialize o Firebase (faça isso fora das rotas, logo após o app = Flask(__name__))
+# Certifique-se de ter o arquivo .json das suas credenciais
+if not firebase_admin._apps:
+    cred = credentials.Certificate(json.loads(os.environ.get('FIREBASE_CONFIG')))
+    firebase_admin.initialize_app(cred, {
+        'databaseURL': 'https://orcamentos-bio-centra-default-rtdb.firebaseio.com'
+    })
 
 @app.route('/')
 def index():
@@ -55,6 +63,7 @@ def gerar_orcamento():
 
     lista_produtos = []
     total_geral = 0
+    arquivos_para_deletar = []
 
     for i in range(len(nomes)):
         if not nomes[i]: continue # Pula linhas vazias
@@ -67,6 +76,7 @@ def gerar_orcamento():
             caminho_foto_final = os.path.join(UPLOAD_FOLDER, filename)
             foto.save(caminho_foto_final)
             caminho_foto_final = caminho_foto_final.replace('\\', '/')
+            arquivos_para_deletar.append(caminho_foto_final) 
 
         v_unit = float(valores[i] or 0)
         qtd = int(quants[i] or 0)
@@ -82,6 +92,17 @@ def gerar_orcamento():
             'subtotal': subtotal
         })
 
+    # LÓGICA DO NÚMERO INCREMENTAL COM FIREBASE
+    ref = db.reference('contador_orcamento')
+    
+    # transação garante que se dois usuários gerarem ao mesmo tempo, os números não batam
+    def increment_transaction(current_value):
+        return (current_value or 0) + 1
+
+    novo_numero = ref.transaction(increment_transaction)
+    
+    # Formata para ter zeros a esquerda, ex: 2026-001
+    numero_formatado = f"2026 - {novo_numero:03d}"
     
     html_renderizado = render_template(
         'orcamento.html',
@@ -89,13 +110,35 @@ def gerar_orcamento():
         produtos=lista_produtos, # Passamos a lista completa com specs e imagens
         total=total_geral,
         data=datetime.now().strftime('%d/%m/%Y'),
+        num_orcamento=numero_formatado,
         logo_path=f"file:///{logo_path}"
     )
 
     nome_arquivo = f"orcamento_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
     caminho_pdf = os.path.join(OUTPUT_DIR, nome_arquivo)
+    arquivos_para_deletar.append(caminho_pdf)
 
     HTML(string=html_renderizado, base_url=request.base_url).write_pdf(caminho_pdf)
+
+    # Função mágica do Flask: executa algo DEPOIS que a resposta for enviada
+    @after_this_request
+    def remover_arquivo(response):
+        try:
+            os.remove(caminho_pdf)
+            print(f"Arquivo {nome_arquivo} removido com sucesso!")
+        except Exception as e:
+            print(f"Erro ao deletar arquivo: {e}")
+        return response
+    
+    @after_this_request
+    def limpar_arquivos(response):
+        for caminho in arquivos_para_deletar:
+            try:
+                if os.path.exists(caminho):
+                    os.remove(caminho)
+            except Exception as e:
+                app.logger.error(f"Erro ao deletar {caminho}: {e}")
+        return response
 
     return send_file(caminho_pdf, as_attachment=True)
 
