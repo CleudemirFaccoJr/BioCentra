@@ -1,22 +1,15 @@
 # app.py
-from flask import Flask, render_template, request, send_file, session, redirect, url_for
-import pandas as pd
-import pdfkit
-from datetime import datetime
-import os
-from werkzeug.utils import secure_filename
 import platform
+import os
+import pandas as pd
+from flask import Flask, render_template, request, send_file, session, redirect, url_for
+from weasyprint import HTML, CSS
+from datetime import datetime
+from werkzeug.utils import secure_filename
+
 
 app = Flask(__name__)
 app.secret_key = 'chave_secreta_para_sessoes' # Essencial para o "session" funcionar
-
-if platform.system() == "Windows":
-    config = pdfkit.configuration(
-        wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
-    )
-else:
-    # Linux (Render)
-    config = pdfkit.configuration(wkhtmltopdf='/usr/local/bin/wkhtmltopdf')
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(BASE_DIR, 'output')
@@ -102,9 +95,7 @@ def gerar_orcamento():
     nome_arquivo = f"orcamento_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
     caminho_pdf = os.path.join(OUTPUT_DIR, nome_arquivo)
 
-    pdfkit.from_string(html_renderizado, caminho_pdf, configuration=config, options={
-        'encoding': 'UTF-8', 'enable-local-file-access': None
-    })
+    HTML(string=html_renderizado, base_url=request.base_url).write_pdf(caminho_pdf)
 
     return send_file(caminho_pdf, as_attachment=True)
 
