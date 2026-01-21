@@ -20,12 +20,19 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 logo_path = os.path.join(BASE_DIR, 'static', 'logo.png').replace('\\', '/')
 
+firebase_info = os.environ.get('FIREBASE_CONFIG')
 # Inicialize o Firebase (faça isso fora das rotas, logo após o app = Flask(__name__))
 # Certifique-se de ter o arquivo .json das suas credenciais
 if not firebase_admin._apps:
-    cred = credentials.Certificate(json.loads(os.environ.get('FIREBASE_CONFIG')))
+    if firebase_info:
+        # No Render
+        cred = credentials.Certificate(json.loads(firebase_info))
+    else:
+        # Localmente (se você tiver o arquivo salvo como firebase-credentials.json)
+        cred = credentials.Certificate("firebase-credentials.json")
+    
     firebase_admin.initialize_app(cred, {
-        'databaseURL': 'https://orcamentos-bio-centra-default-rtdb.firebaseio.com'
+        'databaseURL': 'https://orcamentos-bio-centra-default-rtdb.firebaseio.com/'
     })
 
 @app.route('/')
