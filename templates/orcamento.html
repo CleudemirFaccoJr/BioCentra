@@ -51,6 +51,7 @@
   .full-width-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
   .full-width-table th { background-color: #f8f9fa; color: #333; border: 1px solid #dee2e6; padding: 12px; text-align: left; }
   .full-width-table td { border: 1px solid #dee2e6; padding: 10px; }
+  .full-width-table .valor_total_resumo{ font-size: 12px!important;}
 
   /* Seção de Condições e Assinaturas (Imagem 3) */
   .conditions { margin-top: 30px; font-size: 12px; }
@@ -154,7 +155,7 @@
       <td>{{ p.nome }}</td>
       <td>{{ p.quantidade }}</td>
       <td>R$ {{ p.valor_unitario | formato_moeda }}</td>
-      <td>R$ {{ p.subtotal | formato_moeda }}</td>
+      <td class="valor_total_resumo">R$ {{ p.subtotal | formato_moeda }}</td>
     </tr>
     {% endfor %}
   </tbody>
