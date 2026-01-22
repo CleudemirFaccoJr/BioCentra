@@ -97,7 +97,7 @@
  <div class="divisor"></div>
 
 <!-- Dados do Cliente -->
-<div class="mb-4" style="font-size: 14px;">
+<div>
   
   <div class="row mb-1">
     <div class="col-12">
@@ -160,8 +160,8 @@
   </tbody>
   <tfoot>
     <tr>
-      <td colspan="4" style="text-align:right; border: 1px solid #dee2e6; padding: 5px 10px;"><strong>Total Parcial:</strong></td>
-      <td style="border: 1px solid #dee2e6; padding: 5px 10px;">R$ {{ total | formato_moeda }}</td>
+      <td colspan="3" style="text-align:right; border: 1px solid #dee2e6; padding: 5px 10px;"><strong>Total Parcial:</strong></td>
+      <td colspan="2" style="border: 1px solid #dee2e6; padding: 5px 10px;">R$ {{ total | formato_moeda }}</td>
     </tr>
 
     {% if cliente.valor_frete and cliente.valor_frete|float > 0 %}
