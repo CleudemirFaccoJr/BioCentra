@@ -79,16 +79,13 @@
 <!-- Dados da BioCentra -->
  <div class="container dados-biocentra">
  <div class="row">
-   <div class="col-9">
+   <div class="col-12">
     <strong>Bio-Centra - Comércio e Importação de Suprimentos para Laboratórios Ltda.</strong>
    </div>
-   <div class="col-md-3">
-         CNPJ: 46.735.804/0001-30<br>
-      </div>
  </div>
  <div class="row">
       <div class="col-md-12">
-        biocentra@bio-centra.com | (11) 98942 - 2666 <br>
+        CNPJ: 46.735.804/0001-30 | biocentra@bio-centra.com | (11) 98942 - 2666 <br>
       </div>
  </div>
  <div class="row">
@@ -100,26 +97,42 @@
  <div class="divisor"></div>
 
 <!-- Dados do Cliente -->
-<div style="font-size: 14px; margin-bottom: 20px; width: 100%;">
-    <div style="margin-bottom: 5px;">
-        <strong>Cliente:</strong> {{ cliente.nome }}
+<div class="mb-4" style="font-size: 14px;">
+  
+  <div class="row mb-1">
+    <div class="col-12">
+      <strong>Cliente:</strong> {{ cliente.nome }}
     </div>
-    
-    <div style="margin-bottom: 5px;">
+  </div>
+
+  <div class="row mb-1">
+    <div class="col-12">
       <strong>Contato:</strong> {{ cliente.contato }}
+    </div>
+  </div>
 
+  <div class="row mb-1">
+    <div class="col-md-4">
+      <strong>CNPJ:</strong> {{ cliente.cnpj }}
     </div>
 
-    <div style="margin-bottom: 5px; display: table; width: 100%;">
-        <div style="display: table-cell; width: 33%;"><strong>CNPJ:</strong> {{ cliente.cnpj }}</div>
-        <div style="display: table-cell; width: 33%; text-align: center;"><strong>Email:</strong> {{ cliente.email }}</div>
-        <div style="display: table-cell; width: 33%; text-align: right;"><strong>Telefone:</strong> {{ cliente.telefone }}</div>
+    <div class="col-md-4 text-md-center">
+      <strong>Email:</strong> {{ cliente.email }}
     </div>
 
-    <div>
-        <strong>Endereço:</strong> {{ cliente.endereco }}
+    <div class="col-md-4 text-md-end">
+      <strong>Telefone:</strong> {{ cliente.telefone }}
     </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <strong>Endereço:</strong> {{ cliente.endereco }}
+    </div>
+  </div>
+
 </div>
+
 
 <div style="border-bottom: 1px solid #ccc; margin: 15px 0;"></div>
 
