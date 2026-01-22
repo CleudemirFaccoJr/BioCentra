@@ -20,6 +20,12 @@
 
   /* Dados da BioCentra */
   .dados-biocentra { border-bottom: 2px solid #eee!important; }
+  .dados-biocentra strong { font-size: 14px; color: #444; }
+
+  /* Valor do Cliente */
+  .valorcliente .legenda_valor {text-align:right; border: 1px solid #dee2e6; padding:10px;}
+  .valorcliente .valor_total { font-weight:bold; background: #f8f9fa; border: 2px solid #dee2e6; padding:10px;}
+
 
   /* Dados do Cliente */
   .cliente-box { margin-bottom: 30px; font-size: 14px; line-height: 1.6; }
@@ -100,12 +106,13 @@
     </div>
     
     <div style="margin-bottom: 5px;">
-        <strong>Email:</strong> {{ cliente.email }}
+      <strong>Contato:</strong> {{ cliente.contato }}
+
     </div>
 
     <div style="margin-bottom: 5px; display: table; width: 100%;">
         <div style="display: table-cell; width: 33%;"><strong>CNPJ:</strong> {{ cliente.cnpj }}</div>
-        <div style="display: table-cell; width: 33%; text-align: center;"><strong>Contato:</strong> {{ cliente.contato }}</div>
+        <div style="display: table-cell; width: 33%; text-align: center;"><strong>Email:</strong> {{ cliente.email }}</div>
         <div style="display: table-cell; width: 33%; text-align: right;"><strong>Telefone:</strong> {{ cliente.telefone }}</div>
     </div>
 
@@ -155,9 +162,9 @@
       <td colspan="5" style="border: 1px solid #dee2e6; height: 10px;"></td>
     </tr>
 
-    <tr style="font-size: 18px;">
-      <td colspan="4" style="text-align:right; border: 1px solid #dee2e6; padding:10px;"><strong>Valor Total:</strong></td>
-      <td style="font-weight:bold; background: #f8f9fa; border: 2px solid #dee2e6; padding:10px;">
+    <tr class="valorcliente">
+      <td colspan="3" class="legenda_valor"><strong>Valor Total:</strong></td>
+      <td colspan="2" class="valor_total">
         {# Soma o total dos produtos com o valor do frete #}
         R$ {{ (total + (cliente.valor_frete|float if cliente.valor_frete else 0)) | formato_moeda }}
       </td>
@@ -181,7 +188,7 @@
     {% endfor %}
     {{ garantias_unicas | join(', ') }} contra defeitos de fabricação.
   </li>
-    <li>Os equipamentos comercializados pela Bio-Centra são de uso exclusivo para pesquisa.</li>
+    <li>Os equipamentos comercializados pela Bio-Centra são destinados a uso geral, pesquisa e desenvolvimento.</li>
   </ul>
 </div>
 
