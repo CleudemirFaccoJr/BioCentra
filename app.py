@@ -25,6 +25,20 @@ def formato_moeda(valor):
         return "{:,.2f}".format(valor_float).replace(",", "X").replace(".", ",").replace("X", ".")
     except (ValueError, TypeError):
         return valor
+    
+# Função que formata o CNPJ
+@app.template_filter('cnpj')
+def format_cnpj(value):
+    if not value:
+        return ""
+    # Remove qualquer caractere que não seja número (caso já venha sujo)
+    cnpj = "".join(filter(str.isdigit, str(value)))
+    
+    if len(cnpj) != 14:
+        return cnpj # Retorna o original se não tiver 14 dígitos
+    
+    # Aplica a máscara: 00.000.000/0001-00
+    return f"{cnpj[:2]}.{cnpj[2:5]}.{cnpj[5:8]}/{cnpj[8:12]}-{cnpj[12:]}"
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(BASE_DIR, 'output')
