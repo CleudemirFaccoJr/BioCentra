@@ -80,6 +80,10 @@ def proximo():
         ref = db.reference(f"clientes/{dados_cliente['cnpj']}")
         ref.set(dados_cliente) # O 'set' sobrescreve se já existir, evitando duplicatas
 
+    # Busca o número atual para exibir na tela intermediária
+    ref = db.reference('contador_orcamento')
+    numero_atual = ref.get() or 0    
+
     # Salva os dados do cliente na sessão
     session['cliente'] = {
         'nome': request.form.get('nome'),
@@ -91,6 +95,21 @@ def proximo():
         'tipo_frete': request.form.get('tipo_frete'),
         'valor_frete': request.form.get('valor_frete') if request.form.get('tipo_frete') != 'Proprio' else 0
     }
+    return render_template('cadastro_produtos.html')
+
+@app.route('/confirmar-numero', methods=['POST'])
+def confirmar_numero():
+    novo_num_input = request.form.get('novo_numero')
+    ref = db.reference('contador_orcamento')
+    
+    if novo_num_input and novo_num_input.strip() != "":
+        novo_valor = int(novo_num_input)
+        # Atualiza o banco manualmente
+        ref.set(novo_valor)
+        # Opcional: usar flash message (requer {% with messages = get_flashed_messages() %} no HTML)
+        print(f"Atenção! O número agora do contador de orçamentos é: {novo_valor}")
+        # Armazena na sessão que este orçamento usará este número fixo ou apenas segue o fluxo
+    
     return render_template('cadastro_produtos.html')
 
 @app.route('/buscar-cliente/<cnpj>')
@@ -194,7 +213,7 @@ def gerar_orcamento():
                 app.logger.error(f"Erro ao deletar {caminho}: {e}")
         return response
         
-    return send_file(caminho_pdf, as_attachment=True)
+    return send_file(caminho_pdf, mimetype='application/pdf')
 
 if __name__ == '__main__':
     app.run(debug=True)
