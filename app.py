@@ -109,7 +109,7 @@ def proximo():
         'tipo_frete': request.form.get('tipo_frete'),
         'valor_frete': request.form.get('valor_frete') if request.form.get('tipo_frete') != 'Proprio' else 0
     }
-    return render_template('cadastro_produtos.html')
+    return render_template('numero_banco.html', numero_atual=numero_atual)
 
 @app.route('/confirmar-numero', methods=['POST'])
 def confirmar_numero():
